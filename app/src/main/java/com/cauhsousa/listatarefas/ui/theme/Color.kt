@@ -12,3 +12,5 @@ val Pink40 = Color(0xFF7D5260)
 
 
 val Verde44 = Color(0xFF00CFC8)
+val Azul44 = Color(0xFF03fff6)
+val RADIO_BUTTON_YELLOW_DISABLED =  Color(0xFFFFC107)
