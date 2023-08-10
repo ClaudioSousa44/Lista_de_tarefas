@@ -1,6 +1,9 @@
 package com.cauhsousa.listatarefas.view
 
 import android.annotation.SuppressLint
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
@@ -22,12 +25,18 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.cauhsousa.listatarefas.R
+import com.cauhsousa.listatarefas.itemLista.TarefaItem
+import com.cauhsousa.listatarefas.model.Tarefa
 import com.cauhsousa.listatarefas.ui.theme.Verde44
+import com.google.firebase.ktx.Firebase
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaTarefas(navController: NavController) {
+
+    Firebase
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -59,7 +68,43 @@ fun ListaTarefas(navController: NavController) {
             }
         }
 
-    ) {}
+    ) {
+        val listaTarefas: MutableList<Tarefa> = mutableListOf(
+            Tarefa(
+                 titulo = "Jogar futebol",
+                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
+                nivelPrioridade = 0
+            ),
+            Tarefa(
+                titulo = "Ir ao cinema",
+                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
+                nivelPrioridade = 1
+            ),
+            Tarefa(
+                titulo = "Ir para faculdade",
+                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
+                nivelPrioridade = 2
+            ),
+            Tarefa(
+                titulo = "Fazer Comida",
+                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
+                nivelPrioridade = 3
+            )
+
+        )
+
+        LazyColumn(
+            modifier = Modifier.padding(top = 70.dp)
+        ){
+            items(listaTarefas){
+                TarefaItem(
+                    it.titulo!!,
+                    it.descricao!!,
+                    it.nivelPrioridade!!
+                )
+            }
+        }
+    }
 
 }
 

@@ -1,6 +1,7 @@
 package com.cauhsousa.listatarefas.view
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -22,10 +23,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,9 +38,12 @@ import androidx.navigation.NavController
 import com.cauhsousa.listatarefas.R
 import com.cauhsousa.listatarefas.components.Botao
 import com.cauhsousa.listatarefas.components.CaixaDeTexto
+import com.cauhsousa.listatarefas.repository.TarefasRepository
 import com.cauhsousa.listatarefas.ui.theme.Azul44
 import com.cauhsousa.listatarefas.ui.theme.RADIO_BUTTON_YELLOW_DISABLED
 import com.cauhsousa.listatarefas.ui.theme.Verde44
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
@@ -45,6 +51,10 @@ import com.cauhsousa.listatarefas.ui.theme.Verde44
 fun SalvarTarefas(
     navController: NavController
 ) {
+    val scope = rememberCoroutineScope()
+    val context = LocalContext.current
+    val tarefasRepository = TarefasRepository()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -163,9 +173,25 @@ fun SalvarTarefas(
 
             Botao(
                 onClick = {
-                          /*TODO*/
+                        var mensagem: Boolean = true
+                        scope.launch(Dispatchers.IO){
+                            if (tituloTarefa.isEmpty()){
+                                mensagem = false
+                            }
+                        }
+                        scope.launch(Dispatchers.Main){
+                            if(mensagem){
+                                Toast.makeText(context, "Sucesso ao salvar a tarefa",Toast.LENGTH_SHORT).show()
+                            }else{
+                                Toast.makeText(context, "Titulo da tarefa é obrigatório",Toast.LENGTH_SHORT).show()
+                            }
+                        }
+
                           },
-                modifier = Modifier.fillMaxWidth().padding(20.dp).height(80.dp)  ,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(20.dp)
+                    .height(80.dp)  ,
                 text = stringResource(R.string.salvar) )
         }
 
