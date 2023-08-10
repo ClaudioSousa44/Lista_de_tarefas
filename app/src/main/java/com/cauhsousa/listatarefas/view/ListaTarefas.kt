@@ -63,8 +63,3 @@ fun ListaTarefas(navController: NavController) {
 
 }
 
-//@Preview(showBackground = true)
-//@Composable
-//fun ListaTarefasPreview() {
-//    ListaTarefas()
-//}
