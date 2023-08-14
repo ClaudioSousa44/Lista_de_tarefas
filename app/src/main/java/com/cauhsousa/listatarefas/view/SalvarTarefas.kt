@@ -38,6 +38,7 @@ import androidx.navigation.NavController
 import com.cauhsousa.listatarefas.R
 import com.cauhsousa.listatarefas.components.Botao
 import com.cauhsousa.listatarefas.components.CaixaDeTexto
+import com.cauhsousa.listatarefas.constants.Constantes
 import com.cauhsousa.listatarefas.repository.TarefasRepository
 import com.cauhsousa.listatarefas.ui.theme.Azul44
 import com.cauhsousa.listatarefas.ui.theme.RADIO_BUTTON_YELLOW_DISABLED
@@ -177,11 +178,25 @@ fun SalvarTarefas(
                         scope.launch(Dispatchers.IO){
                             if (tituloTarefa.isEmpty()){
                                 mensagem = false
+                            }else if(tituloTarefa.isNotEmpty()  && prioridadeBaixaTarefa){
+                                tarefasRepository.salvarTarefa(tituloTarefa,descricaoTarefa,Constantes.PRIORIDADE_BAIXA)
+                                mensagem = true
+                            }
+                            else if(tituloTarefa.isNotEmpty()  && prioridadeMediaTarefa){
+                                tarefasRepository.salvarTarefa(tituloTarefa,descricaoTarefa,Constantes.PRIORIDADE_MEDIA)
+                                mensagem = true
+                            }else if(tituloTarefa.isNotEmpty()  && prioridadeAltaTarefa){
+                                tarefasRepository.salvarTarefa(tituloTarefa,descricaoTarefa,Constantes.PRIORIDADE_ALTA)
+                                mensagem = true
+                            }else if(tituloTarefa.isNotEmpty()  && semPrioridadeTarefa){
+                                tarefasRepository.salvarTarefa(tituloTarefa,descricaoTarefa,Constantes.SEM_PRIORIDADE)
+                                mensagem = true
                             }
                         }
                         scope.launch(Dispatchers.Main){
                             if(mensagem){
                                 Toast.makeText(context, "Sucesso ao salvar a tarefa",Toast.LENGTH_SHORT).show()
+                                navController.popBackStack()
                             }else{
                                 Toast.makeText(context, "Titulo da tarefa é obrigatório",Toast.LENGTH_SHORT).show()
                             }
