@@ -1,6 +1,7 @@
 package com.cauhsousa.listatarefas.view
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,6 +15,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarColors
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,15 +29,17 @@ import androidx.navigation.NavController
 import com.cauhsousa.listatarefas.R
 import com.cauhsousa.listatarefas.itemLista.TarefaItem
 import com.cauhsousa.listatarefas.model.Tarefa
+import com.cauhsousa.listatarefas.repository.TarefasRepository
 import com.cauhsousa.listatarefas.ui.theme.Verde44
-import com.google.firebase.ktx.Firebase
+import kotlin.math.log
+
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaTarefas(navController: NavController) {
 
-    Firebase
+    val tarefasRepositorio = TarefasRepository()
 
     Scaffold(
         topBar = {
@@ -69,40 +73,19 @@ fun ListaTarefas(navController: NavController) {
         }
 
     ) {
-        val listaTarefas: MutableList<Tarefa> = mutableListOf(
-            Tarefa(
-                 titulo = "Jogar futebol",
-                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
-                nivelPrioridade = 0
-            ),
-            Tarefa(
-                titulo = "Ir ao cinema",
-                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
-                nivelPrioridade = 1
-            ),
-            Tarefa(
-                titulo = "Ir para faculdade",
-                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
-                nivelPrioridade = 2
-            ),
-            Tarefa(
-                titulo = "Fazer Comida",
-                descricao = "hgasdoghiuasfhgoasuybdfoyasbgoyasbgoabgyoafdg",
-                nivelPrioridade = 3
-            )
-
-        )
+        val listaTarefas = tarefasRepositorio.recuperarTarefas().collectAsState(mutableListOf()).value
+        Log.e("", "${listaTarefas}")
 
         LazyColumn(
             modifier = Modifier.padding(top = 70.dp)
         ){
-            items(listaTarefas){
-                TarefaItem(
-                    it.titulo!!,
-                    it.descricao!!,
-                    it.nivelPrioridade!!
-                )
-            }
+         items(listaTarefas){
+             TarefaItem(
+                 titulo = it.tarefa!!,
+                 descricao =it.descricao!! ,
+                 nivelPrioridade = it.prioridade!!
+             )
+         }
         }
     }
 

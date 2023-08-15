@@ -17,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintLayout
+
 import com.cauhsousa.listatarefas.R
 import com.cauhsousa.listatarefas.ui.theme.RADIO_BUTTON_YELLOW_DISABLED
 import com.cauhsousa.listatarefas.ui.theme.ShapePrioridade

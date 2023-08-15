@@ -188,7 +188,7 @@ fun SalvarTarefas(
                             }else if(tituloTarefa.isNotEmpty()  && prioridadeAltaTarefa){
                                 tarefasRepository.salvarTarefa(tituloTarefa,descricaoTarefa,Constantes.PRIORIDADE_ALTA)
                                 mensagem = true
-                            }else if(tituloTarefa.isNotEmpty()  && semPrioridadeTarefa){
+                            }else {
                                 tarefasRepository.salvarTarefa(tituloTarefa,descricaoTarefa,Constantes.SEM_PRIORIDADE)
                                 mensagem = true
                             }
