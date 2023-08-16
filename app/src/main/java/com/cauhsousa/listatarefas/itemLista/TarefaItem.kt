@@ -1,16 +1,21 @@
 package com.cauhsousa.listatarefas.itemLista
 
+import android.app.AlertDialog
+import android.content.Context
+import android.view.KeyEvent.DispatcherState
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -19,15 +24,38 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 
 import com.cauhsousa.listatarefas.R
+import com.cauhsousa.listatarefas.repository.TarefasRepository
 import com.cauhsousa.listatarefas.ui.theme.RADIO_BUTTON_YELLOW_DISABLED
 import com.cauhsousa.listatarefas.ui.theme.ShapePrioridade
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 @Composable
 fun TarefaItem(
     titulo: String,
     descricao: String,
-    nivelPrioridade: Int
+    nivelPrioridade: Int,
+    context: Context
 ) {
+    val scope = rememberCoroutineScope()
+    val tarefasRepository = TarefasRepository()
+
+    fun dialogDeletar(){
+        val alertDialog = AlertDialog.Builder(context)
+        alertDialog.setTitle("Deletar Tarefa")
+            .setMessage("Deseja excluir tarefa?")
+            .setPositiveButton("Sim"){
+                _, _ ->
+                tarefasRepository.deletarTarefa(titulo)
+//                scope.launch ( Dispatchers.Main ){
+//                    listaTa
+//                }
+            }
+            .setNegativeButton("Não"){
+                    _, _ ->
+            }
+            .show()
+    }
 
     var prioridade: String = when(nivelPrioridade){
         0 -> {
@@ -111,7 +139,9 @@ fun TarefaItem(
             ) {}
 
             IconButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                    dialogDeletar()
+                },
                 modifier = Modifier.constrainAs(btDeletar){
                     top.linkTo(txtDescricao.bottom, margin = 10.dp)
                     start.linkTo(cardPrioridade.end, margin = 30.dp)

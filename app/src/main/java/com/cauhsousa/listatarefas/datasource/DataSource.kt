@@ -46,4 +46,12 @@ class DataSource {
         }
         return todasTarefas
     }
+
+    fun deletarTarefa(tarefa: String){
+        db.collection("tarefa").document(tarefa).delete().addOnCompleteListener {
+
+        }.addOnFailureListener{
+
+        }
+    }
 }
